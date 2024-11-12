@@ -1,163 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_tracker/widgets/left_drawer.dart';
+import 'package:mental_health_tracker/screens/menu.dart';
+import 'package:mental_health_tracker/screens/moodentry_form.dart';
 
-class MoodEntryFormPage extends StatefulWidget {
-  const MoodEntryFormPage({super.key});
-
-  @override
-  State<MoodEntryFormPage> createState() => _MoodEntryFormPageState();
-}
-
-class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
-  final _formKey = GlobalKey<FormState>();
-  String _mood = "";
-	String _feelings = "";
-	int _moodIntensity = 0;
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-            appBar: AppBar(
-              title: const Center(
-                child: Text(
-                  'Form Tambah Mood Kamu Hari ini',
-                ),
-              ),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
             ),
-            drawer: const LeftDrawer(),// TODO: Tambahkan drawer yang sudah dibuat di sini
-            body: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Mood",
-                          labelText: "Mood",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _mood = value!;
-                          });
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return "Mood tidak boleh kosong!";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Feelings",
-                        labelText: "Feelings",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      onChanged: (String? value) {
-                        setState(() {
-                          _feelings = value!;
-                        });
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Feelings tidak boleh kosong!";
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Mood intensity",
-                        labelText: "Mood intensity",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (String? value) {
-                        setState(() {
-                          _moodIntensity = int.tryParse(value!) ?? 0;
-                        });
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Mood intensity tidak boleh kosong!";
-                        }
-                        if (int.tryParse(value) == null) {
-                          return "Mood intensity harus berupa angka!";
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),                 
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.primary),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Mood berhasil tersimpan'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Mood: $_mood',),
-                                      Text('Feeling: $_feelings'),
-                                      Text('Mood Intensity: $_moodIntensity'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      _formKey.currentState!.reset();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      },
-                      child: const Text(
-                        "Save",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-
+            child: const Column(
+              children: [
+                Text(
+                  'Mental Health Tracker',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-                  ],
-                )
-              ),
+                Padding(padding: EdgeInsets.all(8)),
+                Text(
+                  "Ayo jaga kesehatan mentalmu setiap hari disini!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
-          );
-            }
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Halaman Utama'),
+            // Redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_outlined),
+            title: const Text('Tambah Mood'),
+            // Redirection ke MoodEntryFormPage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MoodEntryFormPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
+}

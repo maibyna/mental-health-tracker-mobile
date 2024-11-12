@@ -1,4 +1,4 @@
-[14.31, 6/11/2024] Cin mengal❌: import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/screens/moodentry_form.dart';
 class InfoCard extends StatelessWidget {
   // Kartu informasi yang menampilkan title dan content.
