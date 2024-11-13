@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_tracker/screens/list_moodentry.dart';
+import 'package:mental_health_tracker/screens/login.dart';
 import 'package:mental_health_tracker/screens/moodentry_form.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+
 class InfoCard extends StatelessWidget {
   // Kartu informasi yang menampilkan title dan content.
 
@@ -11,7 +16,7 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    return Material(
+    return Card(
       // Membuat kotak kartu dengan bayangan dibawahnya.
       elevation: 2.0,
       child: Container(
@@ -50,6 +55,7 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       // Menentukan warna latar belakang dari tema aplikasi.
       color: Theme.of(context).colorScheme.secondary,
@@ -82,9 +88,7 @@ class ItemCard extends StatelessWidget {
             );
           }
           else if (item.name == "Logout") {
-            final response = await request.logout(
-                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                "http://127.0.0.1:8000//auth/logout/");
+            final response = await request.logout("http://localhost:8000/auth/logout/");
             String message = response["message"];
             if (context.mounted) {
                 if (response['status']) {
